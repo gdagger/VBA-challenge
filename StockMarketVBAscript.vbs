@@ -1,6 +1,15 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "ThisWorkbook"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
 Sub Week2Challenge()
 
-    '
+    '  Set variables
     Dim row As Double
     Dim lrow As Double
     Dim summary_table_row As Double
@@ -12,7 +21,7 @@ Sub Week2Challenge()
     Dim total_volume As Double
     Dim summary_lrow As Double
     
-    ' Bonus
+    '  Set variables for Bonus section
     Dim max_percent As Double
     Dim max_percent_ticker As String
     Dim min_percent As Double
@@ -22,15 +31,16 @@ Sub Week2Challenge()
     
     Dim ws As Worksheet
     
+    '  For loop to run through each worksheet in the workbook
     For Each ws In ThisWorkbook.Sheets
     
-        ' Set variable lrow to the number of rows in the sheet
+        '  Set variable lrow to the number of rows in the sheet
         lrow = ws.Cells(Rows.Count, 1).End(xlUp).row
         
-        ' Initialize the next available row in the first summary table to 2
+        '  Initialize the next available row in the first summary table to 2
         summary_table_row = 2
         
-        ' Initialize the running total for total_volume for each ticker symbol to 0
+        '  Initialize the running total for total_volume for each ticker symbol to 0
         total_volume = 0
         
         '  Create headers for summary table and format as bold/centered
@@ -41,75 +51,75 @@ Sub Week2Challenge()
         ws.Range("I1:L1").Font.Bold = True
         ws.Range("I1:L1").HorizontalAlignment = xlCenter
         
-        ' For loop to iterate through all rows in the worksheet
+        '  For loop to iterate through all rows in the worksheet
         For row = 2 To lrow
             
-            ' Checks if current cell is first of its kind to set yearly_open
+            '  Checks if each cell's ticker symbol is first of its kind to set yearly_open
             If ws.Cells(row, 1).Value <> ws.Cells(row - 1, 1).Value Then
             
-            ' Sets yearly_open equal to the opening price
+            '  Sets yearly_open equal to the opening price in column C
                 yearly_open = ws.Cells(row, "C").Value
                 
             End If
             
-            'Checks next row to see if there are more of the same ticker symbol
+            '  Checks next row to see if there are more of the same ticker symbol
             If ws.Cells(row, 1).Value = ws.Cells(row + 1, 1).Value Then
             
-                 'Update running volume total
+                '  Update total_volume variable for current ticker symbol
                 total_volume = total_volume + ws.Cells(row, "G").Value
             
-            ' Takes effect if ticker in current cell is the last of its kind
+            '  Takes effect if ticker symbol of each cell is the last of its kind
             Else
             
-                ' Adds ticker symbol to next empty row in summary table Ticker column
+                '  Adds ticker symbol to next empty row in summary table Ticker column
                 ws.Cells(summary_table_row, "I").Value = ws.Cells(row, 1).Value
                 
-                'Update running volume total
+                '  Update running volume total
                 total_volume = total_volume + ws.Cells(row, "G").Value
     
                 '  Sets yearly_close equal to closing price
                 yearly_close = ws.Cells(row, "F").Value
                 
-                'Calculate yearly change
+                '  Calculate yearly change
                 yearly_change = (yearly_close - yearly_open)
     
-                'Update Yearly Change column in summary table
+                '  Update Yearly Change column in summary table
                 ws.Cells(summary_table_row, "J").Value = yearly_change
                 
-                'Update Percent Change column in summary table
+                '  Update Percent Change column in summary table
                 ws.Cells(summary_table_row, "K").Value = yearly_change / yearly_open
                 
-                'Update Total Volume column in summary table
+                '  Update Total Volume column in summary table
                 ws.Cells(summary_table_row, "L").Value = total_volume
                 
-                ' Reset yearly_change, yearly_open, and total_volume for next ticker
+                '  Reset yearly_change, yearly_open, and total_volume for next ticker
                 yearly_change = 0
                 yearly_open = 0
                 total_volume = 0
                 
-                ' Updates next empty cell in summary table
+                '  Updates next empty cell in summary table
                 summary_table_row = summary_table_row + 1
                 
             End If
                 
         Next row
         
-        ' Assign variable for last row number in summary table
+        '  Assign variable for last row number in summary table
         summary_lrow = ws.Cells(Rows.Count, "I").End(xlUp).row
         
-        'Format Percent Change column as percents
+        '  Format Percent Change column in Column K as percents
         ws.Range("K2:K" & summary_lrow).NumberFormat = "0.00%"
         
-        'Conditional formatting for Percent Change Column
+        '  Conditional formatting for Percent Change Column
             For row = 2 To summary_lrow
             
-                ' Check if the value is positive
+                '  Check if the value is positive
                 If ws.Cells(row, "J").Value > 0 Then
                 
                     '  Color interior of positive percentages green
                     ws.Cells(row, "J").Interior.ColorIndex = 4
                     
-                ' Check if value is negative
+                '  Check if value is negative
                 ElseIf ws.Cells(row, "J").Value < 0 Then
                 
                     '  Color interior of negative percentages red
@@ -120,7 +130,7 @@ Sub Week2Challenge()
             Next row
         
         ' BONUS
-        'Set Summary Table 2 for Greatest %Increase/%Decrease/Total Volume and "Ticker"/"Value" Headers
+        '  Set Summary Table 2 for Greatest % Increase, Greatest % Decrease, Total Volume Rows and "Ticker"/"Value" Column Headers
         ws.Cells(2, "O").Value = "Greatest % Increase"
         ws.Cells(3, "O").Value = "Greatest % Decrease"
         ws.Cells(4, "O").Value = "Greatest Total Volume"
@@ -135,7 +145,6 @@ Sub Week2Challenge()
         
         ' For loop to iterate through the rows of the summary table
         For row = 2 To summary_lrow
-    
             
             '  Check if each cell in the Percent Change column is GREATER THAN the current MAX percent change
             If ws.Cells(row, "K").Value > max_percent Then
@@ -157,13 +166,13 @@ Sub Week2Challenge()
                 
             End If
             
-            ' Check if each cell in the Total Stock Volume column is greater than the current MAX volume
+            '  Check if each cell in the Total Stock Volume column is greater than the current MAX volume
             If ws.Cells(row, "L").Value > max_volume Then
             
-                ' Update max_volume to the new greatest total volume amount
+                '  Update max_volume to the new greatest total volume amount
                 max_volume = ws.Cells(row, "L").Value
                 
-                ' Update max_volume_ticker to the ticker symbol of the new max value
+                '  Update max_volume_ticker to the ticker symbol of the new max value
                 max_volume_ticker = ws.Cells(row, "I").Value
                 
             End If
@@ -178,10 +187,9 @@ Sub Week2Challenge()
         ws.Cells(4, "P").Value = max_volume_ticker
         ws.Cells(4, "Q").Value = max_volume
         
+
         
-        
-        
-        ' 'Format Percent Change column as percents
+        '  Format Percent Change column as percents
         ws.Range("Q2:Q3").NumberFormat = "0.00%"
         
         '  Auto-fit all used columns
@@ -190,3 +198,6 @@ Sub Week2Challenge()
     Next ws
     
 End Sub
+
+
+
