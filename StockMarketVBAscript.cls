@@ -1,14 +1,6 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "ThisWorkbook"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = True
 Sub Week2Challenge()
 
+    '
     Dim row As Double
     Dim lrow As Double
     Dim summary_table_row As Double
@@ -69,7 +61,7 @@ Sub Week2Challenge()
             ' Takes effect if ticker in current cell is the last of its kind
             Else
             
-                ' Adds ticker symbol to last empty cell in summary table Ticker column
+                ' Adds ticker symbol to next empty row in summary table Ticker column
                 ws.Cells(summary_table_row, "I").Value = ws.Cells(row, 1).Value
                 
                 'Update running volume total
@@ -194,7 +186,7 @@ Sub Week2Challenge()
         
         '  Auto-fit all used columns
         ws.UsedRange.EntireColumn.AutoFit
+        
     Next ws
+    
 End Sub
-
-
