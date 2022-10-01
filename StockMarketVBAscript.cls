@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
-Sub Module2Challenge()
+Sub Week2Challenge()
 
     Dim row As Double
     Dim lrow As Double
@@ -51,9 +51,6 @@ Sub Module2Challenge()
         
         ' For loop to iterate through all rows in the worksheet
         For row = 2 To lrow
-        
-            '  For visual aid during step through
-            'Cells(row, 1).Select
             
             ' Checks if current cell is first of its kind to set yearly_open
             If ws.Cells(row, 1).Value <> ws.Cells(row - 1, 1).Value Then
@@ -199,3 +196,5 @@ Sub Module2Challenge()
         ws.UsedRange.EntireColumn.AutoFit
     Next ws
 End Sub
+
+
